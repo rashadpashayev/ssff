@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shebeke Short Film Festival | Sheki, Azerbaijan</title>
+    <meta name="description" content="Thousand Pieces, One Story. Discover cinema in the light of historic Sheki. The premier international short film festival in Azerbaijan.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400;1,600&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030303;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .cinematic-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Ambient Light Effects (Representing Shebeke Stained Glass Light) */
+        .ambient-light-1 {
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(220, 38, 38, 0.15) 0%, rgba(0,0,0,0) 60%);
+            filter: blur(60px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .ambient-light-2 {
+            position: absolute;
+            bottom: 10%;
+            right: -5%;
+            width: 40vw;
+            height: 40vw;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, rgba(0,0,0,0) 60%);
+            filter: blur(60px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .ambient-light-3 {
+            position: absolute;
+            top: 40%;
+            left: 30%;
+            width: 30vw;
+            height: 30vw;
+            background: radial-gradient(circle, rgba(217, 119, 6, 0.1) 0%, rgba(0,0,0,0) 60%);
+            filter: blur(60px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Glassmorphism UI */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        .glass-nav {
+            background: rgba(3, 3, 3, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: #ffffff;
+            color: #000000;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: #d1d5db;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-outline {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            border-color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Category Cards Hover Effect (Stained Glass Reveal) */
+        .category-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(220,38,38,0.1) 0%, rgba(37,99,235,0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 0;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .category-card:hover::before {
+            opacity: 1;
+        }
+
+        .category-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Scroll Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero Image Overlay */
+        .hero-image {
+            background-image: url('https://images.unsplash.com/photo-1485095329183-d0797cdc5676?q=80&w=2070&auto=format&fit=crop'); /* Cinematic projector abstract */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .hero-overlay {
+            background: linear-gradient(to bottom, rgba(3,3,3,0.3) 0%, rgba(3,3,3,1) 100%);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-white selection:text-black">
+
+    <!-- Ambient Lights -->
+    <div class="ambient-light-1"></div>
+    <div class="ambient-light-2"></div>
+    <div class="ambient-light-3"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo area -->
+                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <span class="cinematic-font text-2xl font-bold tracking-widest text-white">
+                        SSFF<span class="text-xs tracking-widest ml-2 font-sans font-light opacity-60">2026</span>
+                    </span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-10 items-center">
+                    <a href="#about" class="text-xs tracking-[0.2em] hover:text-white text-gray-400 transition-colors uppercase">About</a>
+                    <a href="#categories" class="text-xs tracking-[0.2em] hover:text-white text-gray-400 transition-colors uppercase">Categories</a>
+                    <a href="#jury" class="text-xs tracking-[0.2em] hover:text-white text-gray-400 transition-colors uppercase">Jury</a>
+                    <a href="#contact" class="text-xs tracking-[0.2em] hover:text-white text-gray-400 transition-colors uppercase">Contact</a>
+                    <a href="https://filmfreeway.com" target="_blank" class="btn-primary px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-[0.15em]">Submit Film</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#030303] border-t border-gray-900">
+            <div class="px-4 pt-4 pb-6 space-y-4 text-center">
+                <a href="#about" class="block text-sm tracking-widest text-gray-400 hover:text-white uppercase">About</a>
+                <a href="#categories" class="block text-sm tracking-widest text-gray-400 hover:text-white uppercase">Categories</a>
+                <a href="#jury" class="block text-sm tracking-widest text-gray-400 hover:text-white uppercase">Jury</a>
+                <a href="#contact" class="block text-sm tracking-widest text-gray-400 hover:text-white uppercase">Contact</a>
+                <a href="https://filmfreeway.com" target="_blank" class="block mt-6 btn-primary px-6 py-3 rounded-full text-sm font-semibold uppercase tracking-widest mx-8">Submit Film</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen flex items-center justify-center hero-image">
+        <div class="absolute inset-0 hero-overlay"></div>
+        
+        <div class="text-center z-20 px-4 max-w-6xl mx-auto mt-16">
+            <p class="text-xs md:text-sm tracking-[0.4em] uppercase mb-6 text-gray-400 reveal">Sheki, Azerbaijan</p>
+            
+            <h1 class="cinematic-font text-6xl md:text-8xl lg:text-[10rem] font-bold tracking-tight mb-4 leading-none reveal" style="transition-delay: 100ms;">
+                SHEBEKE
+            </h1>
+            <p class="text-xl md:text-3xl font-light tracking-[0.2em] text-gray-300 mb-12 reveal" style="transition-delay: 200ms;">
+                SHORT FILM FESTIVAL
+            </p>
+            
+            <p class="cinematic-font italic text-2xl md:text-3xl text-gray-400 mb-16 reveal" style="transition-delay: 300ms;">
+                "Thousand pieces, one story."
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-6 justify-center reveal" style="transition-delay: 400ms;">
+                <a href="https://filmfreeway.com" target="_blank" class="btn-primary px-10 py-4 rounded-full font-semibold uppercase tracking-widest flex items-center justify-center gap-3 text-sm">
+                    <i class="fas fa-play text-xs"></i> Submit via FilmFreeway
+                </a>
+                <a href="#about" class="btn-outline px-10 py-4 rounded-full text-white font-medium uppercase tracking-widest flex items-center justify-center text-sm">
+                    Discover
+                </a>
+            </div>
+        </div>
+        
+        <!-- Subtle Scroll indicator -->
+        <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center gap-2 opacity-50">
+            <span class="text-[10px] uppercase tracking-[0.2em]">Scroll</span>
+            <div class="w-[1px] h-12 bg-gradient-to-b from-white to-transparent"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-32 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row gap-20 items-center">
+                
+                <div class="w-full lg:w-1/2 reveal">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-12 h-[1px] bg-red-500"></div>
+                        <p class="text-xs tracking-[0.3em] uppercase text-red-500 font-semibold">The Philosophy</p>
+                    </div>
+                    
+                    <h2 class="cinematic-font text-5xl md:text-6xl mb-10 leading-tight">Where History<br>Meets the Screen</h2>
+                    
+                    <div class="space-y-6 text-gray-400 font-light text-lg leading-relaxed">
+                        <p>
+                            Welcome to the <strong class="text-white font-normal">Shebeke Short Film Festival</strong>, an international cinema event held in the heart of the ancient Silk Road: Sheki, Azerbaijan.
+                        </p>
+                        <p>
+                            Our festival takes its name and inspiration from the unique art of "Shebeke"—the intricate stained-glass windows created by assembling thousands of small glass and wooden pieces without a single drop of glue or a single nail.
+                        </p>
+                        <p>
+                            We believe cinema reflects this very art form. It requires bringing together thousands of distinct frames, sounds, and emotions to create one magnificent story. <span class="text-white italic">When the light shines through, the magic happens.</span>
+                        </p>
+                    </div>
+                    
+                    <div class="mt-14 pt-8 border-t border-gray-800/50">
+                        <p class="text-[10px] text-gray-500 uppercase tracking-[0.3em] mb-2">Organized By</p>
+                        <p class="text-lg tracking-[0.15em] font-medium text-white">İNTİBACH <span class="font-light text-gray-500">CREATIVE AGENCY</span></p>
+                    </div>
+                </div>
+                
+                <div class="w-full lg:w-1/2 reveal relative">
+                    <!-- Glassmorphism Image Container -->
+                    <div class="glass-panel p-4 rotate-3 hover:rotate-0 transition-transform duration-700 relative z-10">
+                        <img src="https://i.imgur.com/ZcGQS9w.jpeg" alt="Stained Glass and Light" class="w-full h-auto rounded-lg opacity-80 mix-blend-screen">
+                    </div>
+                    <!-- Decorative background element -->
+                    <div class="absolute -inset-4 bg-gradient-to-tr from-red-600/20 to-blue-600/20 blur-2xl -z-10 rounded-full"></div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section id="categories" class="py-32 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 reveal">
+                <div>
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-[1px] bg-blue-500"></div>
+                        <p class="text-xs tracking-[0.3em] uppercase text-blue-500 font-semibold">Submissions</p>
+                    </div>
+                    <h2 class="cinematic-font text-5xl">Official Selection</h2>
+                </div>
+                <div class="mt-6 md:mt-0 text-gray-500 text-sm tracking-widest uppercase">
+                    2026 Edition
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 reveal">
+                
+                <!-- Category 1 -->
+                <div class="glass-panel category-card p-10 flex flex-col justify-between h-full">
+                    <div>
+                        <i class="fas fa-globe text-3xl text-gray-500 mb-6"></i>
+                        <h3 class="cinematic-font text-2xl mb-4">International<br>Short Film</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm font-light leading-relaxed">Open to visionary filmmakers from around the globe. Accepting Fiction, Animation, and Documentary.</p>
+                </div>
+
+                <!-- Category 2 -->
+                <div class="glass-panel category-card p-10 flex flex-col justify-between h-full">
+                    <div>
+                        <i class="fas fa-map-marker-alt text-3xl text-gray-500 mb-6"></i>
+                        <h3 class="cinematic-font text-2xl mb-4">National<br>Short Film</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm font-light leading-relaxed">Dedicated to showcasing the best of Azerbaijani cinema and local storytelling.</p>
+                </div>
+
+                <!-- Category 3 -->
+                <div class="glass-panel category-card p-10 flex flex-col justify-between h-full">
+                    <div>
+                        <i class="fas fa-graduation-cap text-3xl text-gray-500 mb-6"></i>
+                        <h3 class="cinematic-font text-2xl mb-4">Student<br>Films</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm font-light leading-relaxed">A special category empowering the next generation of storytellers from universities worldwide.</p>
+                </div>
+
+                <!-- Category 4 -->
+                <div class="glass-panel category-card p-10 flex flex-col justify-between h-full">
+                    <div>
+                        <i class="fas fa-bullhorn text-3xl text-gray-500 mb-6"></i>
+                        <h3 class="cinematic-font text-2xl mb-4">Brand Story<br>& PSA</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm font-light leading-relaxed">Celebrating the art of advertising. The best commercial or social PSA will receive the Intibach Award.</p>
+                </div>
+
+            </div>
+
+            <!-- Special Awards Banner -->
+            <div class="mt-16 reveal glass-panel p-8 md:p-12 border-l-4 border-l-red-500">
+                <div class="flex flex-col lg:flex-row justify-between items-center gap-10">
+                    <div class="lg:w-1/3">
+                        <h3 class="cinematic-font text-3xl mb-2 text-white">Special Focus</h3>
+                        <p class="text-gray-400 text-sm font-light">We give special recognition to films addressing critical global issues with unique artistic perspectives.</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-10 lg:w-2/3 justify-end">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center shrink-0 border border-red-500/20">
+                                <i class="fas fa-apple-alt text-red-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-medium mb-1 tracking-wide">The Golden Apple</h4>
+                                <p class="text-xs text-gray-500 font-light">Women's Rights & Girls' Education</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0 border border-emerald-500/20">
+                                <i class="fas fa-leaf text-emerald-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-medium mb-1 tracking-wide">The Green World</h4>
+                                <p class="text-xs text-gray-500 font-light">Environment & Climate Awareness</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Jury Section -->
+    <section id="jury" class="py-32 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20 reveal">
+                <div class="flex items-center justify-center gap-4 mb-4">
+                    <div class="w-8 h-[1px] bg-amber-500"></div>
+                    <p class="text-xs tracking-[0.3em] uppercase text-amber-500 font-semibold">The Panel</p>
+                    <div class="w-8 h-[1px] bg-amber-500"></div>
+                </div>
+                <h2 class="cinematic-font text-5xl md:text-6xl mb-6">Meet the Jury</h2>
+                <p class="text-gray-400 max-w-xl mx-auto font-light">A distinguished panel of academics, filmmakers, and critics guiding the vision of Shebeke.</p>
+            </div>
+
+            <!-- Ortalanmış Jury Grid ( Sadece 2 Kişi ) -->
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-16 md:gap-32 reveal">
+                
+                <!-- Jury 1 -->
+                <div class="text-center group cursor-default">
+                    <div class="w-56 h-56 md:w-64 md:h-64 mx-auto rounded-full mb-8 overflow-hidden border-2 border-gray-800 group-hover:border-white transition-all duration-500 relative flex items-center justify-center p-2">
+                        <div class="w-full h-full rounded-full bg-[#0a0a0a] overflow-hidden relative">
+                            <!-- Placeholder icon -->
+                            <div class="absolute inset-0 flex items-center justify-center opacity-20">
+                                <i class="fas fa-user text-5xl"></i>
+                            </div>
+                            <!-- Image (Replace src later) -->
+                            <img src="" alt="" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700 opacity-0 absolute inset-0 z-10">
+                            <!-- Glass tint overlay on hover -->
+                            <div class="absolute inset-0 bg-red-500/20 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"></div>
+                        </div>
+                    </div>
+                    <h3 class="cinematic-font text-3xl mb-2">Mirbala Salimli</h3>
+                    <p class="text-xs uppercase tracking-[0.3em] text-gray-500">Film Director</p>
+                </div>
+
+                <!-- Jury 2 -->
+                <div class="text-center group cursor-default">
+                    <div class="w-56 h-56 md:w-64 md:h-64 mx-auto rounded-full mb-8 overflow-hidden border-2 border-gray-800 group-hover:border-white transition-all duration-500 relative flex items-center justify-center p-2">
+                        <div class="w-full h-full rounded-full bg-[#0a0a0a] overflow-hidden relative">
+                            <!-- Placeholder icon -->
+                            <div class="absolute inset-0 flex items-center justify-center opacity-20">
+                                <i class="fas fa-user text-5xl"></i>
+                            </div>
+                            <!-- Image (Replace src later) -->
+                            <img src="" alt="" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700 opacity-0 absolute inset-0 z-10">
+                            <!-- Glass tint overlay on hover -->
+                            <div class="absolute inset-0 bg-blue-500/20 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"></div>
+                        </div>
+                    </div>
+                    <h3 class="cinematic-font text-3xl mb-2">Ilkin Umarov</h3>
+                    <p class="text-xs uppercase tracking-[0.3em] text-gray-500">Film Critic</p>
+                </div>
+
+            </div>
+            
+            <div class="text-center mt-20 reveal">
+                <p class="text-gray-600 font-light italic text-sm">More jury members to be announced soon...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section id="contact" class="py-32 relative z-10 overflow-hidden">
+        <!-- Abstract background for CTA -->
+        <div class="absolute inset-0 bg-[#0a0a0a] -z-20"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[30vw] bg-white/5 blur-[100px] rounded-full -z-10"></div>
+
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="cinematic-font text-4xl md:text-6xl lg:text-7xl mb-8 reveal text-white leading-tight">
+                Ready to share your<br>piece of the story?
+            </h2>
+            <p class="text-gray-400 mb-12 text-lg font-light reveal" style="transition-delay: 100ms;">Submissions for the 2026 edition are now open exclusively on FilmFreeway.</p>
+            
+            <div class="reveal" style="transition-delay: 200ms;">
+                <a href="https://filmfreeway.com" target="_blank" class="inline-block btn-primary px-12 py-5 rounded-full text-sm font-bold uppercase tracking-[0.2em]">
+                    Submit Your Film
+                </a>
+            </div>
+
+            <!-- Contact Info Grid -->
+            <div class="mt-32 grid grid-cols-1 md:grid-cols-3 gap-12 border-t border-gray-800/50 pt-16 reveal" style="transition-delay: 300ms;">
+                <div class="text-center md:text-left">
+                    <p class="text-[10px] uppercase tracking-[0.3em] text-gray-600 mb-4">Inquiries</p>
+                    <a href="mailto:info@intibach.com" class="block text-gray-300 hover:text-white mb-2 font-light">info@intibach.com</a>
+                    <a href="mailto:shebekefest@gmail.com" class="block text-gray-300 hover:text-white font-light">shebekefest@gmail.com</a>
+                </div>
+                <div class="text-center">
+                    <p class="text-[10px] uppercase tracking-[0.3em] text-gray-600 mb-4">Location</p>
+                    <p class="text-gray-300 font-light">Sheki, Azerbaijan</p>
+                </div>
+                <div class="text-center md:text-right">
+                    <p class="text-[10px] uppercase tracking-[0.3em] text-gray-600 mb-4">Social</p>
+                    <a href="#" class="inline-block text-gray-300 hover:text-white mr-4"><i class="fab fa-instagram text-xl"></i></a>
+                    <a href="#" class="inline-block text-gray-300 hover:text-white"><i class="fab fa-facebook-f text-xl"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#030303] py-10 border-t border-gray-900 text-center relative z-10">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col items-center">
+            <span class="cinematic-font text-xl font-bold tracking-widest text-white mb-4 opacity-50">SSFF</span>
+            <p class="text-gray-500 text-[10px] tracking-[0.2em] uppercase mb-2">
+                © 2026 Shebeke Short Film Festival
+            </p>
+            <p class="text-gray-600 text-[10px] tracking-[0.2em] uppercase">
+                Powered by <span class="text-gray-400">İNTİBACH CREATIVE AGENCY</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+
+        // Navbar blur effect on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-[0_4px_30px_rgba(0,0,0,0.5)]');
+                navbar.classList.replace('py-0', 'py-0'); // maintain height
+            } else {
+                navbar.classList.remove('shadow-[0_4px_30px_rgba(0,0,0,0.5)]');
+            }
+        });
+
+        // Scroll Reveal Animation
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+
+        window.addEventListener("scroll", reveal);
+        reveal(); // Trigger on load
+    </script>
+</body>
+</html>
